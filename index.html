@@ -118,7 +118,8 @@
       <div ng-repeat="klotter in klotterposts" class="col-sm-12 pull-right wow fadeInRightBig" style="min-width: 100%;">
         <div class="card" style="text-align: center;">
           <div class="cardcontainer">
-            <img class="img-rounded img-thumbnail" src="{{klotter.publicUrl}}" />
+            <img class="img-rounded img-thumbnail" src="{{klotter.url}}" />
+            <p>{{ klotter.text }}</p>
           </div>
         </div>
       </div>

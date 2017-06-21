@@ -106,10 +106,29 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
         Backendless.Files.listing( "/myFiles", "*.*", true, 100 ).then(dataLoaded, gotError);
     }
 
+    $scope.getAllPosts = function() {
+	    $scope.klotterposts.length = 0;
+		var queryBuilder = Backendless.DataQueryBuilder.create();
+		 
+		// set where clause
+		//queryBuilder.setWhereClause( "age > 30" );
+		 
+		// request related objects for the columns
+		//queryBuilder.setRelated( [ "address", "preferences" ] );
+		 
+		// request sorting
+		queryBuilder.setSortBy( [ "created desc" ] );
+		 
+		// set offset and page size
+		queryBuilder.setPageSize( 100 );
+		queryBuilder.setOffset( 0 );
+	    Backendless.Persistence.of(post).find(queryBuilder).then(dataLoaded, gotError);
+    }
+
+
+
     function dataLoaded(data) {
-        data.sort((a, b) => {
-            return parseFloat(b.createdOn) - parseFloat(a.createdOn);
-        });
+ 
 
         $timeout(function () {
 	        $scope.klotterposts.length = 0;
