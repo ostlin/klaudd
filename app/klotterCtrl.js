@@ -3,7 +3,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
     $scope.loggedIn = false;
     $scope.name = "";
 
-    var cache = Backendless.LocalCache.getAll();
+    /*var cache = Backendless.LocalCache.getAll();
     if (cache["stayLoggedIn"]) {
        var tokenExist = Backendless.UserService.isValidLogin();
        if (tokenExist) {
@@ -11,7 +11,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
        } else {
           Backendless.LocalCache.clear();
        }
-    }
+    }*/
 
     $scope.facebookLogin = function() {
       console.log("wooo");
