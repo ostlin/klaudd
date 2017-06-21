@@ -1,5 +1,20 @@
 var app = angular.module('klotterApp', []);
 
+angular.module("klotterApp").directive("ngUploadChange",function(){
+    return{
+        scope:{
+            ngUploadChange:"&"
+        },
+        link:function($scope, $element, $attrs){
+            $element.on("change",function(event){
+                $scope.ngUploadChange({$event: event})
+            })
+            $scope.$on("$destroy",function(){
+                $element.off();
+            });
+        }
+    }
+});
 
 
 (function () {

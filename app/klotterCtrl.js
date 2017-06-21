@@ -1,5 +1,4 @@
 angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, $window, $timeout) {
-
     $scope.loggedIn = false;
     $scope.name = "";
     $scope.klotterposts = [];
@@ -109,15 +108,14 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 
     $scope.getAllPosts = function() {
 	    $scope.klotterposts.length = 0;
-
         Backendless.Files.listing( "/myFiles", "*.*", true ).then(dataLoaded, gotError);
     }
 
     function dataLoaded(data) {
         $timeout(function () {
 	        $scope.klotterposts.length = 0;
+            console.log('hittade bilder - ', data.length);
 	        for(var item in data) {
-                console.log('hittade bild', item);
 	            $scope.klotterposts.push(data[item]);
 	        }
     	}, 350);
@@ -126,5 +124,28 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
     function postAdded(post) {
 	    $scope.newshittext = "";
 	    $scope.getAllPosts();
+    }
+
+    $scope.handleFileSelect = function($event){
+        var files = $event.target.files;
+        $("#loadertrams").show();
+        
+        console.log("\n============ Uploading file with the SYNC API ============"); 
+        try { 
+        var uploadedFile = Backendless.Files.upload( files, '/myFiles').then(fileuploaded, fileUploadError); 
+        console.log( "Uploaded file URL - " + uploadedFile.fileURL); 
+        } catch(e) { 
+        console.log(e); 
+        } 
+    }
+
+    function fileuploaded(file) {
+        $scope.getAllPosts();
+        $("#loadertrams").hide();
+    }
+
+    function fileUploadError(error) {
+        $("#loadertrams").hide();
+        alert(error.message);
     }
 });

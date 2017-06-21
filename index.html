@@ -70,11 +70,19 @@
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
 </script>
+<style>
+
+</style>
 
 	<!-- Preloader -->
 	<div id="preloader">
 		<div id="status"></div>
 	</div>
+
+  <div id="loadertrams" style="display: none;" ng-cloak class="loading">
+    <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+    <span class="sr-only">Loading...</span>
+  </div>
 
 	<!-- FullScreen -->
     <div  class="intro-header">
@@ -88,7 +96,7 @@
 
             <form>
               <label class="custom-file-upload">
-                <input id="fileUpload" type="file" accept="image/*" capture="camera" onchange="handleFileSelect(this.form.fileUpload)"/>
+                <input id="fileUpload" type="file" accept="image/*" capture="camera" ng-upload-change="handleFileSelect($event)" />
                 Klaudda en bild
               </label>
             </form>
