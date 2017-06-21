@@ -118,7 +118,7 @@
       <div ng-repeat="klotter in klotterposts" class="col-sm-12 pull-right wow fadeInRightBig" style="min-width: 100%;">
         <div class="card" style="text-align: center;">
           <div class="cardcontainer">
-            <img class="img-rounded img-thumbnail" src="{{klotter.url}}" />
+            <img class="img-rounded img-thumbnail" ng-src="{{klotter.url}}" rotateonload />
             <p>{{ klotter.text }}</p>
           </div>
         </div>
@@ -128,7 +128,10 @@
 
   <script src="//api.backendless.com/sdk/js/v4/beta/backendless.min.js"></script>
 
+  <script src="js/exif.js"></script>
+
   <!-- angular app -->
+    <script src="app/fileUpload.js"></script>
   <script src="app/angular.min.js"></script>
   <script src="app/app.js"></script>
   <script src="app/klotterCtrl.js"></script>

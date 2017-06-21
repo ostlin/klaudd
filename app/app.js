@@ -1,5 +1,31 @@
 var app = angular.module('klotterApp', []);
 
+angular.module("klotterApp").directive('rotateonload', function(){
+	return {
+        restrict: 'A',
+				link: function(scope, element, attrs) {
+						element.bind('load', function() {
+								console.log(element[0]);
+									EXIF.getData(element[0], function() {
+											var orientation = EXIF.getTag(this, "Orientation");
+											console.log(orientation);
+											console.log();
+											if(6 == orientation) {
+												$(this).css("transform", "rotate(90deg)")
+												$(this).parent().css("overflow","hidden");
+											}
+											if(3 == orientation) {
+												$(this).css("transform", "rotate(180deg)")
+											}
+									});
+						});
+						element.bind('error', function(){
+								alert('image could not be loaded');
+						});
+				}
+    };
+});
+
 angular.module("klotterApp").directive("ngUploadChange",function(){
     return{
         scope:{
