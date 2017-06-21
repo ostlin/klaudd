@@ -3,20 +3,22 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
     $scope.loggedIn = false;
     $scope.name = "";
 
-    /*var cache = Backendless.LocalCache.getAll();
+    var cache = Backendless.LocalCache.getAll();
     if (cache["stayLoggedIn"]) {
-       var tokenExist = Backendless.UserService.isValidLogin();
-       if (tokenExist) {
-	       //$scope.loggedIn = true;
-          var currentUser = Backendless.UserService.loggedInUser();
-          //$scope.name = currentUser.getProperty( "name" );
-          
-          var dataObject = Backendless.Persistence.of("Users").findById( currentUser );
-		   //var currentUserId = Backendless.UserService.loggedInUser();
-       } else {
-          Backendless.LocalCache.clear();
-       }
-    }*/
+       var tokenExist = Backendless.UserService.isValidLogin().then(function (token) {
+	       if (token) {
+	          var currentUser = Backendless.UserService.loggedInUser();	          
+	          var dataObject = Backendless.Persistence.of("Users").findById(currentUser).then(function (data) {      
+		            $timeout(function () {
+			          $scope.loggedIn = true;
+			          $scope.name = data.name;
+			    	}, 250);
+	          });
+	       } else {
+	          Backendless.LocalCache.clear();
+	       }	       
+       });
+    }
 
     $scope.facebookLogin = function() {
       console.log("wooo");
