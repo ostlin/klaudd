@@ -132,7 +132,8 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 
     $scope.handleFileSelect = function($event){
         var files = $event.target.files;
-        $("#loadertrams").show();
+        $("#working").show();
+        $("#main").hide();
         
         console.log("\n============ Uploading file with the SYNC API ============"); 
         try { 
@@ -145,11 +146,13 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 
     function fileuploaded(file) {
         $scope.getAllPosts();
-        $("#loadertrams").hide();
+        $("#working").hide();
+        $("#main").show();
     }
 
     function fileUploadError(error) {
-        $("#loadertrams").hide();
+        $("#working").hide();
+        $("#main").show();
         alert(error.message);
     }
 });
