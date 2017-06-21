@@ -112,6 +112,10 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
     }
 
     function dataLoaded(data) {
+        data.sort((a, b) => {
+            return parseFloat(b.createdOn) - parseFloat(a.createdOn);
+        });
+
         $timeout(function () {
 	        $scope.klotterposts.length = 0;
             console.log('hittade bilder - ', data.length);
