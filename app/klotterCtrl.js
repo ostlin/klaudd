@@ -151,7 +151,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
         
         console.log("\n============ Uploading file with the SYNC API ============"); 
         try { 
-        var uploadedFile = Backendless.Files.upload( files, '/myFiles').then(fileuploaded, fileUploadError); 
+        var uploadedFile = Backendless.Files.upload( files, '/myFiles/' + new Date().getTime() + '/').then(fileuploaded, fileUploadError); 
         console.log( "Uploaded file URL - " + uploadedFile.fileURL); 
         } catch(e) { 
         console.log(e); 
