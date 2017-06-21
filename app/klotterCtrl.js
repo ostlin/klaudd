@@ -67,6 +67,8 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
     }
 
     function gotError(err) { // see more on error handling
+        $("#working").hide();
+        $("#main").show();
         if (err.code != 0) {
 	        alert(err.message);
             console.log("error message - " + err.message);
@@ -98,13 +100,6 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 	  var condition;
 	  var options;
 	}
-
-    $scope.createPostClick = function() {
-	    var post = new klotter( {
-		    text: $scope.newshittext
-		});
-		Backendless.Persistence.of(klotter).save(post).then(postAdded, gotError);
-    }
 
     $scope.getAllPosts = function() {
 	    $scope.klotterposts.length = 0;
@@ -145,6 +140,19 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
     }
 
     function fileuploaded(file) {
+        var inputtext = $scope.inputtext; 
+        $("#working").hide();
+        $("#main").show();
+
+	    var data = new post( {
+		    text: inputtext,
+            url: file.fileURL
+		});
+
+		Backendless.Persistence.of(post).save(data).then(postAdded, gotError);
+    }
+
+    function postAdded(post) {
         $scope.getAllPosts();
         $("#working").hide();
         $("#main").show();
@@ -155,4 +163,10 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
         $("#main").show();
         alert(error.message);
     }
+
+    function post(args) {
+	    args = args || {};
+	    this.text = args.text || "";
+        this.url = args.url || "";
+	}
 });

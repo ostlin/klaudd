@@ -88,11 +88,16 @@
     <div class="col-xs-12 text-center abcen1 main-stuff">
       <h1 class="h1_home wow fadeIn" data-wow-delay="0.4s">Klaudd</h1>
       <h3 ng-hide="loggedIn" class="h3_home wow fadeIn" data-wow-delay="0.6s">Logga in och klaudda</h3>
-      <div ng-show="loggedIn">
-        <h3 class="h3_home wow fadeIn" data-wow-delay="0.6s">Tjenare, {{name}}</h3>
-        <h4>Sätt igång och klaudda</h4>
-
-        <label class="custom-file-upload">
+      <div ng-show="loggedIn" class="row">
+        <h3 class="h3_home wow fadeIn row" data-wow-delay="0.6s">Tjenare, {{name}}</h3>
+        <h4 class="row">Sätt igång och klaudda</h4>
+        <div class="row">
+          <div class="col-xs-3"></div>
+          <input type="search" maxlength="500" minlength="0" ng-model="inputtext" class="col-xs-6 form-input" style="text-align: center; color: #1abc9c;">
+          <div class="col-xs-3"></div>
+          <div class="col-xs-12">&nbsp;</div>
+        </div>
+        <label class="custom-file-upload row">
                 <input id="fileUpload" type="file" accept="image/*" capture="camera" ng-upload-change="handleFileSelect($event)" />
                 Klaudda en bild
               </label>
