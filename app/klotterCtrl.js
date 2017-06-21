@@ -108,7 +108,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 
     $scope.getAllPosts = function() {
 	    $scope.klotterposts.length = 0;
-        Backendless.Files.listing( "/myFiles", "*.*", true ).then(dataLoaded, gotError);
+        Backendless.Files.listing( "/myFiles", "*.*", true, 100 ).then(dataLoaded, gotError);
     }
 
     function dataLoaded(data) {
