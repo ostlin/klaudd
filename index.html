@@ -92,6 +92,17 @@
                 Klaudda en bild
               </label>
             </form>
+
+            <div class="row">
+              <div ng-repeat="klotter in klotterposts" class="col-sm-3 pull-right wow fadeInRightBig">
+                <div class="card">
+                  <div class="cardcontainer">
+                   <img class="img-rounded img-thumbnail" src="{{klotter.publicUrl}}"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+
            </div>
 
 			<ul ng-hide="loggedIn" class="list-inline intro-social-buttons">

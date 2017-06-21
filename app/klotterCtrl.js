@@ -2,6 +2,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 
     $scope.loggedIn = false;
     $scope.name = "";
+    $scope.klotterposts = [];
 
     var cache = Backendless.LocalCache.getAll();
     if (cache["stayLoggedIn"]) {
@@ -12,6 +13,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 		            $timeout(function () {
 			          $scope.loggedIn = true;
 			          $scope.name = data.name;
+                      $scope.getAllPosts();
 			    	}, 250);
 	          });
 	       } else {
@@ -32,6 +34,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
       $timeout(function () {
         $scope.loggedIn = true;
         $scope.name = user.name;
+        $scope.getAllPosts();
     	}, 250);
     }
 
@@ -106,27 +109,15 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 
     $scope.getAllPosts = function() {
 	    $scope.klotterposts.length = 0;
-		var queryBuilder = Backendless.DataQueryBuilder.create();
 
-		// set where clause
-		//queryBuilder.setWhereClause( "age > 30" );
-
-		// request related objects for the columns
-		//queryBuilder.setRelated( [ "address", "preferences" ] );
-
-		// request sorting
-		queryBuilder.setSortBy( [ "created desc" ] );
-
-		// set offset and page size
-		queryBuilder.setPageSize( 100 );
-		//queryBuilder.setOffset( 0 );
-	    Backendless.Persistence.of(klotter).find(queryBuilder).then(dataLoaded, gotError);
+        Backendless.Files.listing( "/myFiles", "*.*", true ).then(dataLoaded, gotError);
     }
 
     function dataLoaded(data) {
         $timeout(function () {
 	        $scope.klotterposts.length = 0;
 	        for(var item in data) {
+                console.log('hittade bild', item);
 	            $scope.klotterposts.push(data[item]);
 	        }
     	}, 350);

@@ -16,3 +16,25 @@ input[type="file"] {
     padding: 6px 12px;
     cursor: pointer;
 }
+
+.card {
+    /* Add shadows to create the "card" effect */
+         padding: 10px;
+        text-overflow: clip;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.2);
+    margin : 10px;
+    transition: 0.3s;
+    border-radius: 25px;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.cardcontainer {
+    padding: 2px 16px;
+}
