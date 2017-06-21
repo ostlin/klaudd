@@ -7,7 +7,12 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
     if (cache["stayLoggedIn"]) {
        var tokenExist = Backendless.UserService.isValidLogin();
        if (tokenExist) {
-          userLoggedInStatus(cache["user-token"]);
+	       //$scope.loggedIn = true;
+          var currentUser = Backendless.UserService.loggedInUser();
+          //$scope.name = currentUser.getProperty( "name" );
+          
+          var dataObject = Backendless.Persistence.of("Users").findById( currentUser );
+		   //var currentUserId = Backendless.UserService.loggedInUser();
        } else {
           Backendless.LocalCache.clear();
        }
@@ -17,7 +22,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
       console.log("wooo");
       permissions = "email";
       facebookFieldsMapping = {email:"email"};
-      Backendless.UserService.loginWithFacebook(facebookFieldsMapping, permissions).then($scope.facebookLoginOK, gotError);
+      Backendless.UserService.loginWithFacebook(facebookFieldsMapping, permissions, true).then($scope.facebookLoginOK, gotError);
     }
 
     $scope.facebookLoginOK = function(user) {
