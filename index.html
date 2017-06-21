@@ -82,15 +82,14 @@
 			     <h1 class="h1_home wow fadeIn" data-wow-delay="0.4s">Klaudd</h1>
            <h3 ng-hide="loggedIn" class="h3_home wow fadeIn" data-wow-delay="0.6s">Logga in och klaudda</h3>
 
-          <label class="custom-file-upload">
-            <input id="file-upload" type="file" accept="image/*" capture="camera" />
-            Klaudda en bild
-          </label>
-
            <div ng-show="loggedIn">
              <h3 class="h3_home wow fadeIn" data-wow-delay="0.6s">Tjenare, {{name}}</h3>
              <h4>Sätt igång och klaudda</h4>
-             <input type="file" accept="image/*" capture="camera" />
+             
+              <label class="custom-file-upload">
+                <input id="file-upload" type="file" accept="image/*" capture="camera" />
+                Klaudda en bild
+              </label>
            </div>
 
 			<ul ng-hide="loggedIn" class="list-inline intro-social-buttons">
