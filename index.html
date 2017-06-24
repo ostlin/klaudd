@@ -82,7 +82,7 @@
   <div id="preloader">
     <div id="status"></div>
   </div>
-<!-- loading screen -->
+  <!-- loading screen -->
   <div id="working" class="intro-header" style="display: none;">
     <div class="col-xs-12 text-center abcen1 main-stuff">
       Sparar
@@ -114,17 +114,17 @@
     </div>
     <div ng-show="loggedIn" class="col-xs-12 text-center abcen wow fadeIn animated animated" style="visibility: visible;">
       <div class="button_down ">
-        <a class="imgcircle wow bounceInUp animated animated" data-wow-duration="1.5s" href="#content" style="visibility: visible; animation-duration: 1.5s;"> <img class="img_scroll" src="img/icon/circle.png" alt=""> </a>
+        <a class="imgcircle wow bounceInUp animated animated" data-wow-duration="1.5s" href="#iamges" style="visibility: visible; animation-duration: 1.5s;"> <img class="img_scroll" src="img/icon/circle.png" alt=""> </a>
       </div>
     </div>
   </div>
 
-  <div class="container" id="content">
+  <div class="container" id="images">
     <div class="row">
       <div ng-repeat="klotter in klotterposts" class="col-sm-12 pull-right wow fadeInRightBig" style="min-width: 100%;">
         <div class="card" style="text-align: center;">
           <div class="cardcontainer">
-            <img class="img-rounded img-thumbnail" ng-src="{{klotter.url}}" rotateonload />
+            <img class="img-rounded img-thumbnail" ng-src="{{klotter.url}}" />
             <p>{{ klotter.text }}</p>
           </div>
         </div>
@@ -137,17 +137,14 @@
   <script src="js/exif.js"></script>
 
   <!-- angular app -->
-    <script src="app/fileUpload.js"></script>
   <script src="app/angular.min.js"></script>
   <script src="app/app.js"></script>
   <script src="app/klotterCtrl.js"></script>
-  <script src="app/fileUpload.js"></script>
-
 
   <!-- JavaScript -->
   <script src="js/jquery-1.10.2.js"></script>
   <script src="js/bootstrap.js"></script>
- <!--script src="js/owl.carousel.js"></script--> 
+  <!--script src="js/owl.carousel.js"></script-->
   <script src="js/script.js"></script>
 
   <!-- Smoothscroll -->
