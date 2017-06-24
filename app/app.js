@@ -1,5 +1,5 @@
 var app = angular.module('klotterApp', []);
-
+/*
 angular.module("klotterApp").directive('rotateonload', function(){
 	return {
         restrict: 'A',
@@ -24,7 +24,7 @@ angular.module("klotterApp").directive('rotateonload', function(){
 						});
 				}
     };
-});
+});*/
 
 angular.module("klotterApp").directive("ngUploadChange",function(){
     return{
