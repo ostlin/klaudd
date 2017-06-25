@@ -9,17 +9,17 @@ angular.module("klotterApp").directive('rotateonload', function(){
 									return;
 								}	
 								console.log(element[0]);
-									EXIF.getData(element[0], function() {
-											var orientation = EXIF.getTag(this, "Orientation");
-											console.log(orientation);
-											if(6 == orientation) {
-												$(this).css("transform", "rotate(90deg)")
-												$(this).parent().css("overflow","hidden");
-											}
-											if(3 == orientation) {
-												$(this).css("transform", "rotate(180deg)")
-											}
-									});
+								EXIF.getData(element[0], function() {
+										var orientation = EXIF.getTag(this, "Orientation");
+										console.log(orientation);
+										if(6 == orientation) {
+											$(this).css("transform", "rotate(90deg)")
+											$(this).parent().css("overflow","hidden");
+										}
+										if(3 == orientation) {
+											$(this).css("transform", "rotate(180deg)")
+										}
+								});
 						});
 						element.bind('error', function(){
 							alert('image could not be loaded');
