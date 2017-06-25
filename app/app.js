@@ -5,11 +5,13 @@ angular.module("klotterApp").directive('rotateonload', function(){
         restrict: 'A',
 				link: function(scope, element, attrs) {
 						element.bind('load', function() {
+							    if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+									return;
+								}	
 								console.log(element[0]);
 									EXIF.getData(element[0], function() {
 											var orientation = EXIF.getTag(this, "Orientation");
 											console.log(orientation);
-											console.log();
 											if(6 == orientation) {
 												$(this).css("transform", "rotate(90deg)")
 												$(this).parent().css("overflow","hidden");
@@ -20,7 +22,7 @@ angular.module("klotterApp").directive('rotateonload', function(){
 									});
 						});
 						element.bind('error', function(){
-								alert('image could not be loaded');
+							alert('image could not be loaded');
 						});
 				}
     };
