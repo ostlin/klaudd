@@ -88,7 +88,6 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 	    Backendless.UserService.register(user).then(userRegistered, gotError);
     }
 
-
     // POSTA DATA
     function klotter(args) {
 	    args = args || {};
@@ -103,33 +102,18 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 
     $scope.getAllPosts = function() {
 	    $scope.klotterposts.length = 0;
-        Backendless.Files.listing( "/myFiles", "*.*", true, 100 ).then(dataLoaded, gotError);
-    }
-
-    $scope.getAllPosts = function() {
-	    $scope.klotterposts.length = 0;
 		var queryBuilder = Backendless.DataQueryBuilder.create();
-		 
-		// set where clause
-		//queryBuilder.setWhereClause( "age > 30" );
-		 
-		// request related objects for the columns
-		//queryBuilder.setRelated( [ "address", "preferences" ] );
 		 
 		// request sorting
 		queryBuilder.setSortBy( [ "created desc" ] );
 		 
 		// set offset and page size
-		queryBuilder.setPageSize( 100 );
+		queryBuilder.setPageSize( 20 );
 		queryBuilder.setOffset( 0 );
 	    Backendless.Persistence.of(post).find(queryBuilder).then(dataLoaded, gotError);
     }
 
-
-
     function dataLoaded(data) {
- 
-
         $timeout(function () {
 	        $scope.klotterposts.length = 0;
             console.log('hittade bilder - ', data.length);
@@ -144,42 +128,79 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 	    $scope.getAllPosts();
     }
 
-    $scope.handleFileSelect = function($event){
-        var files = $event.target.files;
+    // new upload function
+    $scope.handleFileSelect = function($event) {
         $("#working").show();
         $("#main").hide();
-        
-        console.log("\n============ Uploading file with the SYNC API ============"); 
-        try { 
-        var uploadedFile = Backendless.Files.upload( files, '/myFiles/' + new Date().getTime() + '/').then(fileuploaded, fileUploadError); 
-        console.log( "Uploaded file URL - " + uploadedFile.fileURL); 
-        } catch(e) { 
-        console.log(e); 
-        } 
+        $("#images").hide();
+        var filesToUpload = $event.target.files;
+        var file = filesToUpload[0];
+        // Create an image
+        var ctx = document.getElementById('thepicture').getContext('2d');
+        var img = new Image;
+        img.onload = function() {
+                    var MAX_WIDTH = 600;
+                    var MAX_HEIGHT = 600;
+                    var width = img.width;
+                    var height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+                    ctx.canvas.width = width;
+                    ctx.canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    pictureRenderd(ctx.canvas.toDataURL("image/png"));
+        }
+        img.src = URL.createObjectURL(file);
+    }
+
+    function pictureRenderd(data) {
+        var filename = new Date().getTime() + ".png";
+        var path = '/myFiles/' + new Date().getTime() + '/';
+
+        // Decode the dataURL
+        binary = atob(data.split(',')[1])
+        // Create 8-bit unsigned array
+        array = []
+        for (var i = 0; i < binary.length; ++i) {
+            array.push(binary.charCodeAt(i));
+        }
+        var blob = new Blob([ new Uint8Array(array)], {type : 'image/png'})
+        var savedFile = Backendless.Files.saveFile( path, filename, blob, true ).then(fileuploaded, fileUploadError);
+        console.log("File sent");
     }
 
     function fileuploaded(file) {
         var inputtext = $scope.inputtext; 
-        $("#working").hide();
-        $("#main").show();
-
 	    var data = new post( {
 		    text: inputtext,
-            url: file.fileURL
+            url: file
 		});
 
 		Backendless.Persistence.of(post).save(data).then(postAdded, gotError);
     }
 
     function postAdded(post) {
+        $scope.inputtext = "";
         $scope.getAllPosts();
         $("#working").hide();
         $("#main").show();
+        $("#images").show();
     }
 
     function fileUploadError(error) {
         $("#working").hide();
         $("#main").show();
+        $("#images").show();
         alert(error.message);
     }
 

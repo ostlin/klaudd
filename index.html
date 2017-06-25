@@ -104,6 +104,7 @@
   <div id="working" class="intro-header" style="display: none;">
     <div class="col-xs-12 text-center abcen1 main-stuff">
       Sparar
+    <canvas id="thepicture" style="display: none;" width="800" height="800"></canvas>
     </div>
   </div>
 
@@ -143,7 +144,7 @@
         <div class="card" style="text-align: center;">
           <div class="cardcontainer">
             <div>
-              <img class="img-rounded img-thumbnail" ng-src="{{klotter.url}}" rotateonload/>
+              <img class="img-rounded img-thumbnail" ng-src="{{klotter.url}}" />
             </div>
             <div>
               <p>{{ klotter.text }}</p>
