@@ -56,11 +56,22 @@
 
 <body id="home" ng-app="klotterApp" ng-controller="klotterCtrl">
   <script>
-    console.log("url : "+ window.location.href.toLowerCase());
-    if (window.location.href.toLowerCase())
+
+  if (inIframe())
+  {
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream)
     {
-      window.location.href.toLowerCase()
+      window.top.location.href = 'https://ostlin.github.io/klaudd/index.html';
     }
+  }
+
+  function inIframe() {
+      try {
+          return window.self !== window.top;
+      } catch (e) {
+          return true;
+      }
+  }
     /*
     window.fbAsyncInit = function () {
       FB.init({
