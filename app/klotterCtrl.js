@@ -3,6 +3,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
     $scope.name = "";
     $scope.klotterposts = [];
     $scope.verifylogin = true;
+    $scope.pagingoffset = 0;
 
     var cache = Backendless.LocalCache.getAll();
     if (cache["stayLoggedIn"]) {
@@ -15,13 +16,15 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 			          $scope.name = data.name;
                       $scope.getAllPosts();
                       $scope.verifylogin = false;
-			    	}, 250);
+			    	}, 50);
 	          });
 	       } else {
 	          Backendless.LocalCache.clear();
               $scope.verifylogin = false;
 	       }	       
        });
+    } else {
+        $scope.verifylogin = false;
     }
 
     $scope.facebookLogin = function() {
@@ -37,18 +40,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
         $scope.loggedIn = true;
         $scope.name = user.name;
         $scope.getAllPosts();
-    	}, 250);
-    }
-
-    $scope.loginClick = function () {
-	    var self = this;
-	    Backendless.LocalCache.clear();
-	    Backendless.UserService.login($scope.loginName, $scope.loginPassword, true).then($scope.userLoggedInStatus, gotError);
-    }
-
-    $scope.showRegister = function () {
-       console.log($scope.wantToRegister);
-       $scope.wantToRegister = true;
+    	}, 100);
     }
 
     function userLoggedOut() {
@@ -58,15 +50,6 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
     $scope.logoutUserClick = function() {
         localStorage.clear();
         Backendless.UserService.logout().then(userLoggedOut, gotError);
-    }
-
-    $scope.userLoggedInStatus = function (user) {
-	    $timeout(function () {
-		    $scope.loggedIn = true;
-		    $scope.loginName = "";
-		    $scope.loginPassword = "";
-		    $scope.getAllPosts();
-    	}, 250);
     }
 
     function gotError(err) { // see more on error handling
@@ -109,21 +92,33 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 		 
 		// request sorting
 		queryBuilder.setSortBy( [ "created desc" ] );
-		 
+		$scope.pagingoffset = 0;
 		// set offset and page size
-		queryBuilder.setPageSize( 20 );
-		queryBuilder.setOffset( 0 );
+		queryBuilder.setPageSize( 10 );
+		queryBuilder.setOffset( $scope.pagingoffset);
 	    Backendless.Persistence.of(post).find(queryBuilder).then(dataLoaded, gotError);
+    }
+
+    $scope.loadmore = function () {
+        $scope.loadingmoredata = true;
+		var queryBuilder = Backendless.DataQueryBuilder.create();
+		// request sorting
+		queryBuilder.setSortBy( [ "created desc" ] );
+		// set offset and page size
+		queryBuilder.setPageSize( 10 );
+		queryBuilder.setOffset( $scope.pagingoffset);
+	    Backendless.Persistence.of(post).find(queryBuilder).then(dataLoaded, gotError);       
     }
 
     function dataLoaded(data) {
         $timeout(function () {
-	        $scope.klotterposts.length = 0;
+            $scope.pagingoffset = $scope.pagingoffset + data.length;
             console.log('hittade bilder - ', data.length);
 	        for(var item in data) {
 	            $scope.klotterposts.push(data[item]);
 	        }
-    	}, 350);
+            $scope.loadingmoredata = false;
+    	}, 50);
     }
 
     function postAdded(post) {
