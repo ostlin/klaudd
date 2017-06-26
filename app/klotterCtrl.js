@@ -2,6 +2,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
     $scope.loggedIn = false;
     $scope.name = "";
     $scope.klotterposts = [];
+    $scope.verifylogin = true;
 
     var cache = Backendless.LocalCache.getAll();
     if (cache["stayLoggedIn"]) {
@@ -13,10 +14,12 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 			          $scope.loggedIn = true;
 			          $scope.name = data.name;
                       $scope.getAllPosts();
+                      $scope.verifylogin = false;
 			    	}, 250);
 	          });
 	       } else {
 	          Backendless.LocalCache.clear();
+              $scope.verifylogin = false;
 	       }	       
        });
     }

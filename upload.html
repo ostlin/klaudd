@@ -13,32 +13,26 @@ function handleFiles(e) {
 var ctx = document.getElementById('canvas').getContext('2d');
 var img = new Image;
 img.onload = function() {
-    //ctx.drawImage(img, 20,20);
-
-
             var MAX_WIDTH = 600;
             var MAX_HEIGHT = 600;
             var width = img.width;
             var height = img.height;
 
             if (width > height) {
-            if (width > MAX_WIDTH) {
-                height *= MAX_WIDTH / width;
-                width = MAX_WIDTH;
-            }
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
             } else {
-            if (height > MAX_HEIGHT) {
-                width *= MAX_HEIGHT / height;
-                height = MAX_HEIGHT;
-            }
+                if (height > MAX_HEIGHT) {
+                    width *= MAX_HEIGHT / height;
+                    height = MAX_HEIGHT;
+                }
             }
             canvas.width = width;
             canvas.height = height;
-
             ctx.drawImage(img, 0, 0, width, height);
-
             pictureRenderd(canvas);
-
 }
 img.src = URL.createObjectURL(e.target.files[0]);
 

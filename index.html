@@ -128,7 +128,8 @@
               </label>
       </div>
       <ul ng-hide="loggedIn" class="list-inline intro-social-buttons">
-        <li ng-click="facebookLogin()" href="#login" class="btn  btn-lg mybutton_cyano wow fadeIn" data-wow-delay="0.8s"><span class="network-name">Logga in via Facebook</span></li>
+        <li ng-hide="verifylogin" ng-click="facebookLogin()" href="#login" class="btn  btn-lg mybutton_cyano wow fadeIn" data-wow-delay="0.8s"><span class="network-name">Logga in via Facebook</span></li>
+        <li ng-show="verifylogin"><span class="wow bounceInUp">Vänta lite...</span><li>
       </ul>
     </div>
     <div ng-show="loggedIn" class="col-xs-12 text-center abcen wow fadeIn animated animated" style="visibility: visible;">
