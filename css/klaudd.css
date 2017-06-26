@@ -38,3 +38,14 @@ input[type="file"] {
 .cardcontainer {
     padding: 2px 16px;
 }
+
+.profileimage {
+    border-radius: 50%;
+    border-style:solid;
+    border-width: 3px;
+    border-color: black;
+    position: absolute; 
+    top: 2px; 
+    left: 2px;
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.2);
+}

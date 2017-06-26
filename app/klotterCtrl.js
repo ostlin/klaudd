@@ -108,10 +108,30 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
             $scope.pagingoffset = $scope.pagingoffset + data.length;
             console.log('hittade bilder - ', data.length);
 	        for(var item in data) {
-	            $scope.klotterposts.push(data[item]);
+                $scope.klotterposts.push(data[item]);
+                
+                var dataObject = Backendless.Persistence.of("Users").findById(data[item].ownerId).then(function (data) {      
+                    for(var klotter in $scope.klotterposts) {
+                        if ($scope.klotterposts[klotter].ownerId === data.objectId)
+                        {
+                            $scope.klotterposts[klotter].user = data;
+                            var url = createFacebookProfileUrl(data);
+                            $scope.klotterposts[klotter].user.fbProfileUrl = url;
+                            console.log($scope.klotterposts[klotter].user.fbProfileUrl)
+                        }
+                    }
+                    $scope.$apply();
+                });
+
+	            //$scope.klotterposts.push(data[item]);
 	        }
             $scope.loadingmoredata = false;
     	}, 50);
+    }
+
+    function createFacebookProfileUrl(user) {
+        var url = '//graph.facebook.com/v2.5/' + user.id + '/picture?type=small';
+        return url;
     }
 
     function postAdded(post) {
