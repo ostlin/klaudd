@@ -5,9 +5,6 @@ angular.module("klotterApp").directive('rotateonload', function(){
         restrict: 'A',
 				link: function(scope, element, attrs) {
 						element.bind('load', function() {
-							    if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-									return;
-								}	
 								console.log(element[0]);
 								EXIF.getData(element[0], function() {
 										var orientation = EXIF.getTag(this, "Orientation");
