@@ -19,12 +19,17 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 			    	}, 250);
 	          });
 	       } else {
-	          Backendless.LocalCache.clear();
+              $timeout(function () {
+                $scope.verifylogin = false;
+              }, 250);
               $scope.verifylogin = false;
+	          Backendless.LocalCache.clear();
 	       }	       
        });
     } else {
-        $scope.verifylogin = false;
+        $timeout(function () {
+            $scope.verifylogin = false;
+        }, 200);
     }
 
     $scope.facebookLogin = function() {
