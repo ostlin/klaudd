@@ -12,11 +12,11 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 	          var currentUser = Backendless.UserService.loggedInUser();	          
 	          var dataObject = Backendless.Persistence.of("Users").findById(currentUser).then(function (data) {      
 		            $timeout(function () {
+                      $scope.verifylogin = false;
 			          $scope.loggedIn = true;
 			          $scope.name = data.name;
                       $scope.getAllPosts();
-                      $scope.verifylogin = false;
-			    	}, 50);
+			    	}, 250);
 	          });
 	       } else {
 	          Backendless.LocalCache.clear();
@@ -60,18 +60,6 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
             console.log("error message - " + err.message);
             console.log("error code - " + err.statusCode);
         }
-    }
-
-    function userRegistered(user) {
-	    Backendless.UserService.login($scope.createUserName, $scope.createPassword, true).then(userLoggedInStatus, gotError);
-    }
-
-    $scope.createUserClick = function() {
-	    var user = new Backendless.User();
-	    user.email = $scope.createUserName;
-	    user.name = $scope.createName;
-	    user.password = $scope.createPassword;
-	    Backendless.UserService.register(user).then(userRegistered, gotError);
     }
 
     // POSTA DATA
