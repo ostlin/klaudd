@@ -42,14 +42,14 @@ input[type="file"] {
 .cardcontainer img {
     border: 0px !important;
     border-radius: 15px;
-    box-shadow: 2px 6px 10px 0 rgba(0,0,0,0.2);
+   /* box-shadow: 2px 6px 10px 0 rgba(0,0,0,0.2);*/
     padding-bottom: 5px;
 }
 
 .profileimage {
     border-radius: 50% !important;
     border-style: solid !important;
-    border-width: 3px !important;
+    border-width: 23px !important;
     border-color: black !important;
     position: absolute; 
     top: 2px; 

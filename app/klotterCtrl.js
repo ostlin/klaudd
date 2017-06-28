@@ -4,6 +4,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
     $scope.klotterposts = [];
     $scope.verifylogin = true;
     $scope.pagingoffset = 0;
+    $scope.users = [];
 
     var cache = Backendless.LocalCache.getAll();
     if (cache["stayLoggedIn"]) {
@@ -12,6 +13,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
 	          var currentUser = Backendless.UserService.loggedInUser();	          
 	          var dataObject = Backendless.Persistence.of("Users").findById(currentUser).then(function (data) {      
 		            $timeout(function () {
+                      $scope.getAllUserData();
                       $scope.verifylogin = false;
 			          $scope.loggedIn = true;
 			          $scope.name = data.name;
@@ -42,6 +44,7 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
     $scope.facebookLoginOK = function(user) {
       console.log(user.name);
       $timeout(function () {
+        $scope.getAllUserData();
         $scope.loggedIn = true;
         $scope.name = user.name;
         $scope.getAllPosts();
@@ -67,17 +70,26 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
         }
     }
 
-    // POSTA DATA
-    function klotter(args) {
-	    args = args || {};
-	    this.text = args.text || "";
-	}
-
+/*
 	function DataQuery(args) {
 	  var properties = [];
 	  var condition;
 	  var options;
 	}
+*/
+
+    $scope.getAllUserData = function() {
+ 	    $scope.users.length = 0;
+		var queryBuilder = Backendless.DataQueryBuilder.create();
+		queryBuilder.setSortBy( [ "created desc" ] );
+		$scope.pagingoffset = 0;
+		queryBuilder.setPageSize( 100 );
+		queryBuilder.setOffset( 0); 
+        Backendless.Persistence.of("Users").find(queryBuilder).then(function (data) {      
+        for(var item in data) {
+            $scope.users.push(data[item]);
+        }});
+    }
 
     $scope.getAllPosts = function() {
 	    $scope.klotterposts.length = 0;
@@ -108,22 +120,30 @@ angular.module('klotterApp').controller('klotterCtrl', function ($scope, $http, 
             $scope.pagingoffset = $scope.pagingoffset + data.length;
             console.log('hittade bilder - ', data.length);
 	        for(var item in data) {
-                $scope.klotterposts.push(data[item]);
-                
-                var dataObject = Backendless.Persistence.of("Users").findById(data[item].ownerId).then(function (data) {      
-                    for(var klotter in $scope.klotterposts) {
-                        if ($scope.klotterposts[klotter].ownerId === data.objectId)
-                        {
-                            $scope.klotterposts[klotter].user = data;
-                            var url = createFacebookProfileUrl(data);
-                            $scope.klotterposts[klotter].user.fbProfileUrl = url;
-                            console.log($scope.klotterposts[klotter].user.fbProfileUrl)
+                if ($scope.users.length != 0) {
+                    for(var u in $scope.users) {
+                        if ($scope.users[u].objectId == data[item].ownerId) {
+                            data[item].user = $scope.users[u];
+                            data[item].user.fbProfileUrl = createFacebookProfileUrl($scope.users[u]);
                         }
                     }
-                    $scope.$apply();
-                });
+                }
 
-	            //$scope.klotterposts.push(data[item]);
+                $scope.klotterposts.push(data[item]);
+                
+                if ($scope.users.length == 0) {
+                    console.log("handle profilepic user by user")
+                    var dataObject = Backendless.Persistence.of("Users").findById(data[item].ownerId).then(function (data) {      
+                        for(var klotter in $scope.klotterposts) {
+                            if ($scope.klotterposts[klotter].ownerId === data.objectId)
+                            {
+                                $scope.klotterposts[klotter].user = data;
+                                $scope.klotterposts[klotter].user.fbProfileUrl = createFacebookProfileUrl(data);
+                            }
+                        }
+                        $scope.$apply();
+                    });
+                }
 	        }
             $scope.loadingmoredata = false;
     	}, 50);
